@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   CalendarDays,
   DoorOpen,
-  UtensilsCrossed,
   ShieldCheck,
   BarChart3,
   Settings,
