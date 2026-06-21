@@ -60,7 +60,7 @@ function SettingsPage() {
               { label: "Check-in reminders", desc: "10 minutes before meeting start" },
               { label: "Auto-release warnings", desc: "Notify before releasing an unattended room" },
               { label: "Approval requests", desc: "Boardroom requests awaiting decision" },
-              { label: "Catering updates", desc: "Status changes for catering orders" },
+              { label: "Weekly utilization digest", desc: "Monday summary of room usage" },
             ].map((n, i) => (
               <div key={n.label}>
                 {i > 0 && <Separator className="my-2" />}
