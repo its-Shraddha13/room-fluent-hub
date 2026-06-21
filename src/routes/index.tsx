@@ -50,8 +50,29 @@ const toneStyles: Record<string, string> = {
 
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [bookingOpen, setBookingOpen] = useState(false);
+  const [secondsToCheckin, setSecondsToCheckin] = useState(4 * 60);
+  const [checkedIn, setCheckedIn] = useState(false);
   const todays = bookings.filter((b) => b.day === 0).slice(0, 5);
+
+  useEffect(() => {
+    const t = setInterval(() => setSecondsToCheckin((s) => (s > 0 ? s - 1 : 0)), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  const checkinMinutes = Math.floor(secondsToCheckin / 60);
+  const checkinSecs = secondsToCheckin % 60;
+  const checkinProgress = useMemo(
+    () => Math.max(0, Math.min(100, ((4 * 60 - secondsToCheckin) / (4 * 60)) * 100)),
+    [secondsToCheckin],
+  );
+
+  const handleCheckIn = () => {
+    setCheckedIn(true);
+    toast.success("Checked in to Design Review", { description: "Horizon · 10:00–11:30 AM" });
+  };
+
 
   return (
     <AppShell>
