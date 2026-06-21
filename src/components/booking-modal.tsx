@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Calendar, Clock, Users, Utensils } from "lucide-react";
+import { Calendar, Clock, Users } from "lucide-react";
 import {
   Dialog,
   DialogContent,
