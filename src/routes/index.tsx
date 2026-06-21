@@ -128,8 +128,8 @@ function Dashboard() {
                   Live status across all rooms
                 </p>
               </div>
-              <Button variant="ghost" size="sm" asChild>
-                <Link to="/calendar">See all</Link>
+              <Button variant="ghost" size="sm" onClick={() => navigate({ to: "/calendar" })}>
+                See all
               </Button>
             </CardHeader>
             <CardContent className="space-y-2">
