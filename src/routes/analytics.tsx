@@ -59,7 +59,7 @@ const pieColors = [
 ];
 
 const heatmap = Array.from({ length: 5 }, (_, d) =>
-  Array.from({ length: 10 }, (_, h) => Math.round(Math.random() * 100)),
+  Array.from({ length: 10 }, (_, h) => ((d * 13 + h * 17 + 23) % 80) + 20),
 );
 
 const stats = [
