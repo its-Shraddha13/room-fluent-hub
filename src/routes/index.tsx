@@ -19,7 +19,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { BookingModal } from "@/components/booking-modal";
-import { bookings, rooms } from "@/lib/mock-data";
+import { rooms } from "@/lib/mock-data";
+import { useBookings } from "@/lib/bookings-store";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
