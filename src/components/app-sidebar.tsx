@@ -29,7 +29,6 @@ const navItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Calendar", url: "/calendar", icon: CalendarDays },
   { title: "Rooms", url: "/rooms", icon: DoorOpen },
-  { title: "Catering", url: "/catering", icon: UtensilsCrossed },
   { title: "Approvals", url: "/approvals", icon: ShieldCheck },
   { title: "Analytics", url: "/analytics", icon: BarChart3 },
 ];
