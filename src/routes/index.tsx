@@ -191,13 +191,24 @@ function Dashboard() {
             <CardContent className="space-y-4">
               <div className="rounded-xl border border-primary/20 bg-gradient-to-br from-primary/5 to-primary-glow/5 p-4">
                 <div className="flex items-center gap-2 text-xs font-semibold text-primary">
-                  <Clock className="h-3.5 w-3.5" /> Starts in 4 min
+                  <Clock className="h-3.5 w-3.5" />
+                  {checkedIn
+                    ? "Checked in"
+                    : secondsToCheckin > 0
+                      ? `Starts in ${checkinMinutes}m ${String(checkinSecs).padStart(2, "0")}s`
+                      : "Starting now"}
                 </div>
                 <div className="mt-2 text-base font-semibold">Design Review</div>
                 <div className="text-xs text-muted-foreground">Horizon · 10:00–11:30 AM</div>
-                <Progress value={62} className="mt-3 h-1.5" />
-                <Button size="sm" className="mt-3 w-full">
-                  <CheckCircle2 className="mr-1.5 h-3.5 w-3.5" /> Check in
+                <Progress value={checkedIn ? 100 : checkinProgress} className="mt-3 h-1.5" />
+                <Button
+                  size="sm"
+                  className="mt-3 w-full"
+                  disabled={checkedIn}
+                  onClick={handleCheckIn}
+                >
+                  <CheckCircle2 className="mr-1.5 h-3.5 w-3.5" />
+                  {checkedIn ? "Checked in" : "Check in"}
                 </Button>
               </div>
 
