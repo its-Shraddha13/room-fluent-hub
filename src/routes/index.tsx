@@ -1,18 +1,18 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
 import {
   DoorOpen,
   CalendarCheck2,
   Activity,
   AlertTriangle,
   ShieldCheck,
-  UtensilsCrossed,
   ArrowUpRight,
   TimerReset,
   CheckCircle2,
   Clock,
   Users,
 } from "lucide-react";
+import { toast } from "sonner";
 import { AppShell } from "@/components/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Dashboard · RoomHub" },
-      { name: "description", content: "Live overview of meeting rooms, bookings, approvals and catering." },
+      { name: "description", content: "Live overview of meeting rooms, bookings and approvals." },
     ],
   }),
   component: Dashboard,
@@ -38,7 +38,6 @@ const kpis = [
   { label: "Room Utilization", value: "78%", delta: "Target 75%", icon: Activity, tone: "success" },
   { label: "No-show Rate", value: "4.2%", delta: "−1.8% this week", icon: AlertTriangle, tone: "warning" },
   { label: "Pending Approvals", value: "6", delta: "3 boardroom", icon: ShieldCheck, tone: "secondary" },
-  { label: "Catering Requests", value: "12", delta: "4 in prep", icon: UtensilsCrossed, tone: "primary" },
 ];
 
 const toneStyles: Record<string, string> = {
@@ -48,6 +47,7 @@ const toneStyles: Record<string, string> = {
   warning: "bg-warning/15 text-[color:var(--warning-foreground)]",
   secondary: "bg-secondary text-secondary-foreground",
 };
+
 
 function Dashboard() {
   const [bookingOpen, setBookingOpen] = useState(false);
