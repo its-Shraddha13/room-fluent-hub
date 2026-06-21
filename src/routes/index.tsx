@@ -90,8 +90,9 @@ function Dashboard() {
             </p>
           </div>
           <div className="flex shrink-0 items-center gap-2">
-            <Button variant="outline" asChild>
-              <Link to="/calendar">View calendar</Link>
+            <Button variant="outline" onClick={() => navigate({ to: "/calendar" })}>
+              <CalendarCheck2 className="mr-1.5 h-4 w-4" />
+              View calendar
             </Button>
             <Button onClick={() => setBookingOpen(true)}>
               <CalendarCheck2 className="mr-1.5 h-4 w-4" />
