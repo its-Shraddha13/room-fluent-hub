@@ -19,7 +19,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { BookingModal } from "@/components/booking-modal";
-import { bookings, rooms } from "@/lib/mock-data";
+import { rooms } from "@/lib/mock-data";
+import { useBookings } from "@/lib/bookings-store";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -54,7 +55,8 @@ function Dashboard() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [secondsToCheckin, setSecondsToCheckin] = useState(4 * 60);
   const [checkedIn, setCheckedIn] = useState(false);
-  const todays = bookings.filter((b) => b.day === 0).slice(0, 5);
+  const allBookings = useBookings();
+  const todays = allBookings.filter((b) => b.day === 0).slice(0, 5);
 
   useEffect(() => {
     const t = setInterval(() => setSecondsToCheckin((s) => (s > 0 ? s - 1 : 0)), 1000);
