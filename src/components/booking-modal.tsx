@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Calendar, Clock, Users, Utensils } from "lucide-react";
+import { Calendar, Clock, Users } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -122,11 +122,6 @@ export function BookingModal({ open, onOpenChange, defaultRoomId, defaultStart }
             <Textarea id="desc" rows={2} placeholder="Optional agenda or notes" />
           </div>
 
-          <label className="flex items-center gap-2 rounded-lg border border-border bg-muted/40 px-3 py-2.5 text-sm">
-            <Checkbox id="catering" />
-            <Utensils className="h-3.5 w-3.5 text-muted-foreground" />
-            <span>Request catering for this meeting</span>
-          </label>
 
           {error && (
             <div className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-xs text-destructive">
