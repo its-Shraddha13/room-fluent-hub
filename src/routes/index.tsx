@@ -55,7 +55,8 @@ function Dashboard() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [secondsToCheckin, setSecondsToCheckin] = useState(4 * 60);
   const [checkedIn, setCheckedIn] = useState(false);
-  const todays = bookings.filter((b) => b.day === 0).slice(0, 5);
+  const allBookings = useBookings();
+  const todays = allBookings.filter((b) => b.day === 0).slice(0, 5);
 
   useEffect(() => {
     const t = setInterval(() => setSecondsToCheckin((s) => (s > 0 ? s - 1 : 0)), 1000);
