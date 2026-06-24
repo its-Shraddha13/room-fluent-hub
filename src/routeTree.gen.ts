@@ -18,7 +18,6 @@ import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as ApprovalsRouteImport } from './routes/approvals'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiPublicExportUiDotzipRouteImport } from './routes/api/public/export-ui[.]zip'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -65,11 +64,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicExportUiDotzipRoute = ApiPublicExportUiDotzipRouteImport.update({
-  id: '/api/public/export-ui.zip',
-  path: '/api/public/export-ui.zip',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -81,7 +75,6 @@ export interface FileRoutesByFullPath {
   '/rooms': typeof RoomsRoute
   '/settings': typeof SettingsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/api/public/export-ui.zip': typeof ApiPublicExportUiDotzipRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -93,7 +86,6 @@ export interface FileRoutesByTo {
   '/rooms': typeof RoomsRoute
   '/settings': typeof SettingsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/api/public/export-ui.zip': typeof ApiPublicExportUiDotzipRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -106,7 +98,6 @@ export interface FileRoutesById {
   '/rooms': typeof RoomsRoute
   '/settings': typeof SettingsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/api/public/export-ui.zip': typeof ApiPublicExportUiDotzipRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -120,7 +111,6 @@ export interface FileRouteTypes {
     | '/rooms'
     | '/settings'
     | '/sitemap.xml'
-    | '/api/public/export-ui.zip'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -132,7 +122,6 @@ export interface FileRouteTypes {
     | '/rooms'
     | '/settings'
     | '/sitemap.xml'
-    | '/api/public/export-ui.zip'
   id:
     | '__root__'
     | '/'
@@ -144,7 +133,6 @@ export interface FileRouteTypes {
     | '/rooms'
     | '/settings'
     | '/sitemap.xml'
-    | '/api/public/export-ui.zip'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -157,7 +145,6 @@ export interface RootRouteChildren {
   RoomsRoute: typeof RoomsRoute
   SettingsRoute: typeof SettingsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  ApiPublicExportUiDotzipRoute: typeof ApiPublicExportUiDotzipRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -225,13 +212,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/export-ui.zip': {
-      id: '/api/public/export-ui.zip'
-      path: '/api/public/export-ui.zip'
-      fullPath: '/api/public/export-ui.zip'
-      preLoaderRoute: typeof ApiPublicExportUiDotzipRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -245,7 +225,6 @@ const rootRouteChildren: RootRouteChildren = {
   RoomsRoute: RoomsRoute,
   SettingsRoute: SettingsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  ApiPublicExportUiDotzipRoute: ApiPublicExportUiDotzipRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
