@@ -22,7 +22,7 @@ export const Route = createFileRoute("/settings")({
 function SettingsPage() {
   const handleExportUI = async () => {
     try {
-      const res = await fetch("/api/public/export-ui.zip");
+      const res = await fetch("/export-ui.zip");
       if (!res.ok) throw new Error("Export failed");
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
