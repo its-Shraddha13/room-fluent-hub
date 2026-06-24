@@ -13,6 +13,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as RoomsRouteImport } from './routes/rooms'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ExportUiDotzipRouteImport } from './routes/export-ui[.]zip'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as ApprovalsRouteImport } from './routes/approvals'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
@@ -37,6 +38,11 @@ const RoomsRoute = RoomsRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExportUiDotzipRoute = ExportUiDotzipRouteImport.update({
+  id: '/export-ui.zip',
+  path: '/export-ui.zip',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CalendarRoute = CalendarRouteImport.update({
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/analytics': typeof AnalyticsRoute
   '/approvals': typeof ApprovalsRoute
   '/calendar': typeof CalendarRoute
+  '/export-ui.zip': typeof ExportUiDotzipRoute
   '/login': typeof LoginRoute
   '/rooms': typeof RoomsRoute
   '/settings': typeof SettingsRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/analytics': typeof AnalyticsRoute
   '/approvals': typeof ApprovalsRoute
   '/calendar': typeof CalendarRoute
+  '/export-ui.zip': typeof ExportUiDotzipRoute
   '/login': typeof LoginRoute
   '/rooms': typeof RoomsRoute
   '/settings': typeof SettingsRoute
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/analytics': typeof AnalyticsRoute
   '/approvals': typeof ApprovalsRoute
   '/calendar': typeof CalendarRoute
+  '/export-ui.zip': typeof ExportUiDotzipRoute
   '/login': typeof LoginRoute
   '/rooms': typeof RoomsRoute
   '/settings': typeof SettingsRoute
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/approvals'
     | '/calendar'
+    | '/export-ui.zip'
     | '/login'
     | '/rooms'
     | '/settings'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/approvals'
     | '/calendar'
+    | '/export-ui.zip'
     | '/login'
     | '/rooms'
     | '/settings'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/approvals'
     | '/calendar'
+    | '/export-ui.zip'
     | '/login'
     | '/rooms'
     | '/settings'
@@ -140,6 +152,7 @@ export interface RootRouteChildren {
   AnalyticsRoute: typeof AnalyticsRoute
   ApprovalsRoute: typeof ApprovalsRoute
   CalendarRoute: typeof CalendarRoute
+  ExportUiDotzipRoute: typeof ExportUiDotzipRoute
   LoginRoute: typeof LoginRoute
   RoomsRoute: typeof RoomsRoute
   SettingsRoute: typeof SettingsRoute
@@ -175,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/export-ui.zip': {
+      id: '/export-ui.zip'
+      path: '/export-ui.zip'
+      fullPath: '/export-ui.zip'
+      preLoaderRoute: typeof ExportUiDotzipRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/calendar': {
@@ -220,6 +240,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnalyticsRoute: AnalyticsRoute,
   ApprovalsRoute: ApprovalsRoute,
   CalendarRoute: CalendarRoute,
+  ExportUiDotzipRoute: ExportUiDotzipRoute,
   LoginRoute: LoginRoute,
   RoomsRoute: RoomsRoute,
   SettingsRoute: SettingsRoute,
