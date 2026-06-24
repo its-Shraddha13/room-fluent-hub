@@ -38,6 +38,7 @@ export const Route = createFileRoute("/api/public/export-ui.zip")({
           }
         }
 
+        const blob = await zip.generateAsync({ type: "nodebuffer" });
         const array = new Uint8Array(blob);
         return new Response(array, {
           headers: {
