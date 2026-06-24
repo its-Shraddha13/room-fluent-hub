@@ -38,8 +38,8 @@ export const Route = createFileRoute("/api/public/export-ui.zip")({
           }
         }
 
-        const blob = await zip.generateAsync({ type: "nodebuffer" });
-        return new Response(blob, {
+        const array = new Uint8Array(blob);
+        return new Response(array, {
           headers: {
             "Content-Type": "application/zip",
             "Content-Disposition": 'attachment; filename="roomhub-ui-pages.zip"',
