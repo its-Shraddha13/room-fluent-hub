@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Download } from "lucide-react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -18,6 +20,25 @@ export const Route = createFileRoute("/settings")({
 });
 
 function SettingsPage() {
+  const handleExportUI = async () => {
+    try {
+      const res = await fetch("/export-ui.zip");
+      if (!res.ok) throw new Error("Export failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "roomhub-ui-pages.zip";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast.success("UI pages exported");
+    } catch {
+      toast.error("Could not export UI pages");
+    }
+  };
+
   return (
     <AppShell>
       <div className="mx-auto max-w-3xl space-y-6 p-4 sm:p-6 lg:p-8">
@@ -73,6 +94,22 @@ function SettingsPage() {
                 </div>
               </div>
             ))}
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-fluent-sm">
+          <CardHeader>
+            <CardTitle className="text-base">Export</CardTitle>
+          </CardHeader>
+          <CardContent className="flex items-center justify-between gap-4">
+            <div className="min-w-0">
+              <div className="text-sm font-medium">Export UI pages</div>
+              <div className="text-xs text-muted-foreground">Download a ZIP of all UI pages and components</div>
+            </div>
+            <Button variant="outline" onClick={handleExportUI}>
+              <Download className="mr-2 h-4 w-4" />
+              Export UI ZIP
+            </Button>
           </CardContent>
         </Card>
 
