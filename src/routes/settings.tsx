@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { AppShell } from "@/components/app-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -19,7 +20,87 @@ export const Route = createFileRoute("/settings")({
   component: SettingsPage,
 });
 
+type Profile = {
+  name: string;
+  email: string;
+  dept: string;
+  loc: string;
+};
+
+const DEFAULT_PROFILE: Profile = {
+  name: "Sarah Kim",
+  email: "sarah.kim@contoso.com",
+  dept: "Office Management",
+  loc: "Seattle HQ",
+};
+
+const NOTIF_ITEMS = [
+  { key: "confirmations", label: "Booking confirmations", desc: "Email + in-app when a booking is confirmed", def: true },
+  { key: "checkin", label: "Check-in reminders", desc: "10 minutes before meeting start", def: true },
+  { key: "autorelease", label: "Auto-release warnings", desc: "Notify before releasing an unattended room", def: true },
+  { key: "approvals", label: "Approval requests", desc: "Boardroom requests awaiting decision", def: true },
+  { key: "digest", label: "Weekly utilization digest", desc: "Monday summary of room usage", def: false },
+];
+
+const PROFILE_KEY = "roomhub:profile";
+const NOTIF_KEY = "roomhub:notifications";
+
 function SettingsPage() {
+  const [profile, setProfile] = useState<Profile>(DEFAULT_PROFILE);
+  const [savedProfile, setSavedProfile] = useState<Profile>(DEFAULT_PROFILE);
+  const [notifs, setNotifs] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(NOTIF_ITEMS.map((n) => [n.key, n.def])),
+  );
+  const [savedNotifs, setSavedNotifs] = useState(notifs);
+
+  useEffect(() => {
+    try {
+      const p = localStorage.getItem(PROFILE_KEY);
+      if (p) {
+        const parsed = { ...DEFAULT_PROFILE, ...JSON.parse(p) };
+        setProfile(parsed);
+        setSavedProfile(parsed);
+      }
+      const n = localStorage.getItem(NOTIF_KEY);
+      if (n) {
+        const parsed = { ...notifs, ...JSON.parse(n) };
+        setNotifs(parsed);
+        setSavedNotifs(parsed);
+      }
+    } catch {
+      /* ignore */
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const update = (k: keyof Profile, v: string) => setProfile((p) => ({ ...p, [k]: v }));
+
+  const handleSave = () => {
+    if (!profile.name.trim()) {
+      toast.error("Full name is required");
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(profile.email)) {
+      toast.error("Enter a valid work email");
+      return;
+    }
+    try {
+      localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+      localStorage.setItem(NOTIF_KEY, JSON.stringify(notifs));
+      setSavedProfile(profile);
+      setSavedNotifs(notifs);
+      toast.success("Changes saved");
+    } catch {
+      toast.error("Could not save changes");
+    }
+  };
+
+  const handleCancel = () => {
+    setProfile(savedProfile);
+    setNotifs(savedNotifs);
+    toast.message("Changes discarded");
+  };
+
   const handleExportUI = async () => {
     try {
       const res = await fetch("/export-ui.zip");
@@ -54,19 +135,19 @@ function SettingsPage() {
           <CardContent className="grid gap-4 sm:grid-cols-2">
             <div className="grid gap-1.5">
               <Label htmlFor="name">Full name</Label>
-              <Input id="name" defaultValue="Sarah Kim" />
+              <Input id="name" value={profile.name} onChange={(e) => update("name", e.target.value)} />
             </div>
             <div className="grid gap-1.5">
               <Label htmlFor="email">Work email</Label>
-              <Input id="email" type="email" defaultValue="sarah.kim@contoso.com" />
+              <Input id="email" type="email" value={profile.email} onChange={(e) => update("email", e.target.value)} />
             </div>
             <div className="grid gap-1.5">
               <Label htmlFor="dept">Department</Label>
-              <Input id="dept" defaultValue="Office Management" />
+              <Input id="dept" value={profile.dept} onChange={(e) => update("dept", e.target.value)} />
             </div>
             <div className="grid gap-1.5">
               <Label htmlFor="loc">Default office</Label>
-              <Input id="loc" defaultValue="Seattle HQ" />
+              <Input id="loc" value={profile.loc} onChange={(e) => update("loc", e.target.value)} />
             </div>
           </CardContent>
         </Card>
@@ -76,21 +157,18 @@ function SettingsPage() {
             <CardTitle className="text-base">Notifications</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {[
-              { label: "Booking confirmations", desc: "Email + in-app when a booking is confirmed" },
-              { label: "Check-in reminders", desc: "10 minutes before meeting start" },
-              { label: "Auto-release warnings", desc: "Notify before releasing an unattended room" },
-              { label: "Approval requests", desc: "Boardroom requests awaiting decision" },
-              { label: "Weekly utilization digest", desc: "Monday summary of room usage" },
-            ].map((n, i) => (
-              <div key={n.label}>
+            {NOTIF_ITEMS.map((n, i) => (
+              <div key={n.key}>
                 {i > 0 && <Separator className="my-2" />}
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
                     <div className="text-sm font-medium">{n.label}</div>
                     <div className="text-xs text-muted-foreground">{n.desc}</div>
                   </div>
-                  <Switch defaultChecked={i < 4} />
+                  <Switch
+                    checked={!!notifs[n.key]}
+                    onCheckedChange={(v) => setNotifs((s) => ({ ...s, [n.key]: v }))}
+                  />
                 </div>
               </div>
             ))}
@@ -114,8 +192,10 @@ function SettingsPage() {
         </Card>
 
         <div className="flex justify-end gap-2">
-          <Button variant="outline">Cancel</Button>
-          <Button>Save changes</Button>
+          <Button variant="outline" onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Button onClick={handleSave}>Save changes</Button>
         </div>
       </div>
     </AppShell>
